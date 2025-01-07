@@ -19,9 +19,22 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
+      
+      - name: Run SQ Scanner
+        env:
+          SONAR_HOST_URL: http://51.8.240.141:9000
+          SONAR_TOKEN: sqa_f53b759799bb9bd562fe1a4b230b89b4bca77cda
+        run: |
+          curl -sL https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.2.1.4610-linux-x64.zip -o sonar-scanner.zip
+          unzip sonar-scanner.zip -d $HOME
+          $HOME/sonar-scanner-*/bin/sonar-scanner \
+            -Dsonar.projectKey=kotlin-android-template \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=$SONAR_HOST_URL \
+            -Dsonar.login=$SONAR_TOKEN
 
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
+      # - name: Setup Gradle
+      #   uses: gradle/gradle-build-action@v3
 
-      - name: Run build
-        run: ./gradlew build
+      # - name: Run build
+      #  run: ./gradlew build
